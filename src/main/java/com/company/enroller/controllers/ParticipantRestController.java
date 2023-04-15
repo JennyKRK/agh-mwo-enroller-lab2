@@ -17,11 +17,11 @@ public class ParticipantRestController {
 	@Autowired
 	ParticipantService participantService;
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ResponseEntity<?> getParticipants() {
-		Collection<Participant> participants = participantService.getAll();
-		return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
-	}
+//	@RequestMapping(value = "", method = RequestMethod.GET)
+//	public ResponseEntity<?> getParticipants() {
+//		Collection<Participant> participants = participantService.getAll();
+//		return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
+//	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getParticipant(@PathVariable("id") String login) {
@@ -59,9 +59,32 @@ public class ParticipantRestController {
 		if (participant == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
-		participant.setPassword(updatedParticipant.getPassword());
-		participantService.update(participant);
+		//participant.setPassword(updatedParticipant.getPassword());
+		updatedParticipant.setLogin(login);
+		participantService.update(updatedParticipant);
 		return new ResponseEntity<Participant>(HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ResponseEntity<?> getParticipants(@RequestParam(value = "sortBy", defaultValue = "",required=false) String sortBy,
+											 @RequestParam(value = "sortOrder", defaultValue = "",required=false) String sortOrder,
+											 @RequestParam(value = "key", defaultValue = "", required=false) String key)
+	{
+		Collection<Participant> participants = participantService.getAllParticipantsSorted(sortBy, sortOrder, key);
+		return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
+	}
+
+	//http://localhost:8080/participants?key=login
+	//http://localhost:8080/participants?sortBy=login&sortOrder=ASC
+
+	//this one below works well
+
+//	@RequestMapping(value = "", method = RequestMethod.GET)
+//	public ResponseEntity<?> getParticipants(@RequestParam(value = "sortBy", defaultValue = "",required=false) String sortBy,
+//											 @RequestParam(value = "sortOrder", defaultValue = "",required=false) String sortOrder	)
+//	{
+//		Collection<Participant> participants = participantService.getAllParticipantsSorted(sortBy, sortOrder);
+//		return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
+//	}
 
 }

@@ -2,6 +2,7 @@ package com.company.enroller.persistence;
 
 import com.company.enroller.model.Participant;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,5 +43,41 @@ public class ParticipantService {
 		connector.getSession().delete(participant);
 		transaction.commit();
 	}
+
+	public Collection<Participant> getAllParticipantsSorted(String sortBy, String sortOrder, String key) {
+		String hql = "FROM Participant WHERE Login LIKE :key";
+
+
+		if (sortBy.equals("login")){
+			hql += " ORDER BY login";
+		}
+		if (sortOrder.equals("ASC")) {
+			hql += " ASC";
+		}
+		if (sortOrder.equals("DESC")) {
+			hql += " DESC";
+		}
+
+		Query query = connector.getSession().createQuery(hql, Participant.class);
+		query.setParameter("key","%" + key + "%");
+		return query.list();
+	}
+
+	//this code works well for sorting
+//	public Collection<Participant> getAllParticipantsSorted(String sortBy, String sortOrder) {
+//		String hql = "FROM Participant";
+//		if (sortBy.equals("login")){
+//			hql += " ORDER BY login";
+//		}
+//		if (sortOrder.equals("ASC")) {
+//			hql += " ASC";
+//		}
+//		if (sortOrder.equals("DESC")) {
+//			hql += " DESC";
+//		}
+//
+//		Query query = connector.getSession().createQuery(hql, Participant.class);
+//		return query.list();
+//	}
 
 }
