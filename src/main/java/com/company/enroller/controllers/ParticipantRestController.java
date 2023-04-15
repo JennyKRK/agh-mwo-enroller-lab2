@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.company.enroller.model.Participant;
 import com.company.enroller.persistence.ParticipantService;
 
+
+
 @RestController
 @RequestMapping("/participants")
 public class ParticipantRestController {
@@ -39,7 +41,13 @@ public class ParticipantRestController {
 					"Unable to create. A participant with login " + participant.getLogin() + " already exist.",
 					HttpStatus.CONFLICT);
 		}
+
+
+
 		participantService.add(participant);
+
+
+
 		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
 	}
 
