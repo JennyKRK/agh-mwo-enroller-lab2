@@ -35,4 +35,24 @@ public class MeetingRestController {
 		}
 		return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
 	}
+
+	//this code returns all participants of a single meeting
+	@RequestMapping(value = "/{id}/participants", method = RequestMethod.GET)
+	public ResponseEntity<?> getMeeting2(@PathVariable("id") long id) {
+		Meeting meeting = meetingService.findById(id);
+		if (meeting == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Participant>>(meeting.getParticipants(), HttpStatus.OK);
+	}
+
+	//this part works well
+//	@RequestMapping(value = "/{id}/participants", method = RequestMethod.GET)
+//	public ResponseEntity<?> getMeeting2(@PathVariable("id") long id) {
+//		Meeting meeting = meetingService.findById(id);
+//		if (meeting == null) {
+//			return new ResponseEntity(HttpStatus.NOT_FOUND);
+//		}
+//		return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+//	}
 }
