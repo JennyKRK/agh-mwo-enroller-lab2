@@ -33,7 +33,6 @@ public class ParticipantService {
 		String hashedPassword = passwordEncoder.encode(participant.getPassword());
 		participant.setPassword(hashedPassword);
 		Transaction transaction = connector.getSession().beginTransaction();
-
 		connector.getSession().save(participant);
 		transaction.commit();
 		return participant;
@@ -70,21 +69,6 @@ public class ParticipantService {
 		return query.list();
 	}
 
-	//this code works well for sorting
-//	public Collection<Participant> getAllParticipantsSorted(String sortBy, String sortOrder) {
-//		String hql = "FROM Participant";
-//		if (sortBy.equals("login")){
-//			hql += " ORDER BY login";
-//		}
-//		if (sortOrder.equals("ASC")) {
-//			hql += " ASC";
-//		}
-//		if (sortOrder.equals("DESC")) {
-//			hql += " DESC";
-//		}
-//
-//		Query query = connector.getSession().createQuery(hql, Participant.class);
-//		return query.list();
-//	}
+
 
 }
