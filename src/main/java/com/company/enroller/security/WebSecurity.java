@@ -33,22 +33,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/participants").permitAll()
-                .antMatchers(HttpMethod.GET, "/participants").permitAll()
+                //.antMatchers(HttpMethod.GET, "/participants").permitAll()
                 .antMatchers("/tokens").permitAll()
                 .antMatchers("/**").authenticated()
-
-//                .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JWTAuthenticationFilter(authenticationManager(), secret, issuer, tokenExpiration), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), secret))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
 
-
-
+   }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
